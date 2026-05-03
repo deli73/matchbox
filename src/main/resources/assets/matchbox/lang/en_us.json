@@ -8,5 +8,6 @@
   "item.matchbox.altimeter.readout.sea": "Altitude: At sea level (y=%s)",
   "item.matchbox.lightmeter": "Actinometer",
   "item.matchbox.lightmeter.readout": "Sunlight: %s / Blocklight: %s",
-  "block.matchbox.mesh": "Mesh"
+  "block.matchbox.mesh": "Mesh",
+  "item.matchbox.mesh": "Mesh"
 }

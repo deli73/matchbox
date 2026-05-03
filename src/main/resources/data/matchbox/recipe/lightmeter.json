@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "iGi",
+    "iQi",
+    "i_i"
+  ],
+  "key": {
+    "i": "minecraft:copper_ingot",
+    "G": "minecraft:glass",
+    "Q": "minecraft:quartz",
+    "_": "minecraft:paper"
+  },
+  "result": {
+    "id": "matchbox:lightmeter",
+    "count": 1
+  },
+  "show_notification": true
+}

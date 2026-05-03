@@ -24,6 +24,9 @@
     ],
     "client": [
       "xyz.sunrose.matchbox.MatchboxClient"
+    ],
+    "fabric-datagen": [
+
     ]
   },
   "mixins": [
@@ -33,7 +36,7 @@
   "depends": {
     "fabricloader": ">=0.14",
     "fabric": "*",
-    "minecraft": "1.20.x",
+    "minecraft": "1.21.1",
     "java": ">=17"
   },
   "suggests": {

@@ -2,14 +2,14 @@ package xyz.sunrose.matchbox.items;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -42,15 +42,14 @@ public class WoodGlueItem extends Item {
             //standard stuff
             world.emitGameEvent(playerEntity, GameEvent.BLOCK_CHANGE, blockPos);
             if (playerEntity != null) {
-                context.getStack().damage(1, playerEntity, (p) -> {
-                    //when "broken", turn back into a glass bottle??
-                    p.setStackInHand(context.getHand(), new ItemStack(Items.GLASS_BOTTLE));
-                });
+                context.getStack().damage(1, playerEntity, context.getHand() == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
             }
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
     }
+
+
 
     private BlockState getUnstrippedBlock(BlockState state, Map<Block, Block> strippedBlocks) {
         Block block = state.getBlock();

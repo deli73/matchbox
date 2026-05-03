@@ -1,44 +1,50 @@
 package xyz.sunrose.matchbox.items;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import xyz.sunrose.matchbox.Matchbox;
 
+import java.util.function.Function;
+
 public class MatchboxItems {
     public static Identifier id(String name) {
-        return new Identifier(Matchbox.MODID, name);
+        return Identifier.of(Matchbox.MODID, name);
     }
 
-    public static Item MATCHBOX = Registry.register(
-            Registries.ITEM, id("matchbox"),
-            new MatchboxToolItem(new FabricItemSettings().maxDamage(64))
+    public static Item register(String name, Function<Item.Settings, Item> itemFactory, Item.Settings settings) {
+        return Registry.register(Registries.ITEM, id(name), itemFactory.apply(settings));
+    }
+
+    public static Item MATCHBOX = register(
+            "matchbox", MatchboxToolItem::new,
+            new Item.Settings().maxDamage(64)
     );
 
-    public static Item DETACHER = Registry.register(
-            Registries.ITEM,  id("detacher"),
-            new DetacherToolItem(new FabricItemSettings().maxCount(1))
+    public static Item DETACHER = register(
+            "detacher", DetacherToolItem::new,
+            new Item.Settings().maxCount(1)
     );
 
-    public static Item WOOD_GLUE = Registry.register(
-            Registries.ITEM,  id("wood_glue"),
-            new WoodGlueItem(new FabricItemSettings().maxDamage(64))
+    public static Item WOOD_GLUE = register(
+            "wood_glue", WoodGlueItem::new,
+            new Item.Settings().maxDamage(64)
     );
 
-    public static final Item ALTIMETER = Registry.register(
-            Registries.ITEM,  id("altimeter"),
-            new AltimeterItem(new FabricItemSettings().maxCount(1))
+    public static final Item ALTIMETER = register(
+           "altimeter", AltimeterItem::new,
+            new Item.Settings().maxCount(1)
     );
 
-    public static final Item LIGHTMETER = Registry.register(
-            Registries.ITEM, id("lightmeter"),
-            new LightMeterItem(new FabricItemSettings().maxCount(1))
+    public static final Item LIGHTMETER = register(
+            "lightmeter", LightMeterItem::new,
+            new Item.Settings().maxCount(1)
     );
 
     /*public static Item REDSTONE_TOOL = Registry.register(
@@ -57,10 +63,10 @@ public class MatchboxItems {
     }
 
     public static void clientInit() {
-        ModelPredicateProviderRegistry.register(
-                ALTIMETER, new Identifier("alt"),
-                (stack, world, entity, seed) -> entity != null ? remap(-64, 320, entity.getY()) : 0.0F
-        );
+//        ModelPredicateProviderRegistry.register(
+//                ALTIMETER, new Identifier("alt"),
+//                (stack, world, entity, seed) -> entity != null ? remap(-64, 320, entity.getY()) : 0.0F
+//        );
     }
 
     private static float remap(double minIn, double maxIn, double value) {

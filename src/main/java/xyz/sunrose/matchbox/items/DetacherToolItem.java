@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.jetbrains.annotations.Nullable;
 import xyz.sunrose.matchbox.Matchbox;
 
 public class DetacherToolItem extends Item {
@@ -27,7 +29,11 @@ public class DetacherToolItem extends Item {
         World world = context.getWorld();
         BlockPos blockPos = context.getBlockPos();
         BlockState blockState = world.getBlockState(blockPos);
-        if(blockState.getBlock() instanceof HorizontalConnectingBlock) { // TODO maybe check for side properties instead of this
+        if(blockState.contains(ConnectingBlock.NORTH) &&
+                blockState.contains(ConnectingBlock.SOUTH) &&
+                blockState.contains(ConnectingBlock.EAST) &&
+                blockState.contains(ConnectingBlock.WEST)
+        ) {
             Direction side = hitSide(context);
             if (  blockState.get(ConnectingBlock.FACING_PROPERTIES.get(side)) ) { // only execute if the relevant side has a connection
                 //detach the relevant side
@@ -40,20 +46,16 @@ public class DetacherToolItem extends Item {
                 );
 
                 world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, blockPos);
-                return ActionResult.success(world.isClient());
+                return ActionResult.SUCCESS;
             }
         }
 
-        else if(blockState.getBlock() instanceof WallBlock) {
+        else if(blockState.contains(Properties.NORTH_WALL_SHAPE) &&
+                blockState.contains(Properties.SOUTH_WALL_SHAPE) &&
+                blockState.contains(Properties.WEST_WALL_SHAPE) &&
+                blockState.contains(Properties.EAST_WALL_SHAPE)) {
             Direction side = hitSide(context);
-            EnumProperty<WallShape> sideToCheck = null;
-            switch (side) {
-                case DOWN, UP -> throw new IllegalArgumentException("Matchbox getting invalid side input in wall's useOnBlock");
-                case NORTH -> sideToCheck = WallBlock.NORTH_SHAPE;
-                case SOUTH -> sideToCheck = WallBlock.SOUTH_SHAPE;
-                case WEST -> sideToCheck = WallBlock.WEST_SHAPE;
-                case EAST -> sideToCheck = WallBlock.EAST_SHAPE;
-            }
+            EnumProperty<WallShape> sideToCheck = getWallShapeEnumProperty(side);
             if (  blockState.get(sideToCheck) != WallShape.NONE) { // only execute if the relevant side has a connection
                 //detach the relevant side
                 BlockState finalState = detachWallSide(world, blockState, blockPos, side, sideToCheck);
@@ -65,11 +67,23 @@ public class DetacherToolItem extends Item {
                 );
 
                 world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, blockPos);
-                return ActionResult.success(world.isClient());
+                return ActionResult.SUCCESS;
             }
         }
 
         return super.useOnBlock(context);
+    }
+
+    private static @Nullable EnumProperty<WallShape> getWallShapeEnumProperty(Direction side) {
+        EnumProperty<WallShape> sideToCheck = null;
+        switch (side) {
+            case DOWN, UP -> throw new IllegalArgumentException("Matchbox getting invalid side input in wall's useOnBlock");
+            case NORTH -> sideToCheck = Properties.NORTH_WALL_SHAPE;
+            case SOUTH -> sideToCheck = Properties.SOUTH_WALL_SHAPE;
+            case WEST -> sideToCheck = Properties.WEST_WALL_SHAPE;
+            case EAST -> sideToCheck = Properties.EAST_WALL_SHAPE;
+        }
+        return sideToCheck;
     }
 
     private BlockState detachSide(World world, BlockState state, BlockPos pos, Direction dir){
@@ -88,10 +102,14 @@ public class DetacherToolItem extends Item {
         //TODO fix vertical stuff
 
         // disconnect the wall on our side...
-        BlockState newState = state.with(side, WallShape.NONE).with(WallBlock.UP, true);
+        BlockState newState =  state.contains(WallBlock.UP) ? state.with(side, WallShape.NONE).with(WallBlock.UP, true) : state.with(side, WallShape.NONE);
         BlockState neighbor = world.getBlockState(pos.offset(dir));
         if (neighbor.getBlock() instanceof WallBlock) {
-            world.setBlockState(pos.offset(dir), neighbor.with(oppositeSide(dir), WallShape.NONE).with(WallBlock.UP, true), Block.NOTIFY_LISTENERS | Block.FORCE_STATE);
+            world.setBlockState(
+                    pos.offset(dir),
+                     neighbor.contains(WallBlock.UP) ? neighbor.with(oppositeSide(dir), WallShape.NONE).with(WallBlock.UP, true) :
+                             neighbor.with(oppositeSide(dir), WallShape.NONE),
+                    Block.NOTIFY_LISTENERS | Block.FORCE_STATE);
         }
         return newState;
     }

@@ -1,16 +1,18 @@
 package xyz.sunrose.matchbox.items;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Vanishable;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class LightMeterItem extends Item implements Vanishable {
+public class LightMeterItem extends Item {
     private boolean lightSent = false;
     public LightMeterItem(Item.Settings settings) {
         super(settings);

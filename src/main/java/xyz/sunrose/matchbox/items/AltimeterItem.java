@@ -3,14 +3,14 @@ package xyz.sunrose.matchbox.items;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Vanishable;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class AltimeterItem extends Item implements Vanishable {
+public class AltimeterItem extends Item {
     private static final int SEA_LEVEL = 62;
 
     public AltimeterItem(Settings settings) {

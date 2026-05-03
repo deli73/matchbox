@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#minecraft:campfires",
+    "#minecraft:candles",
+    "#minecraft:candle_cakes",
+    {"id": "#supplementaries:candle_holders", "required": false},
+    {"id": "#supplementaries:sconces", "required": false},
+    {"id": "supplementaries:gunpowder", "required": false},
+    {"id": "#bbb:braziers", "required": false}
+  ]
+}

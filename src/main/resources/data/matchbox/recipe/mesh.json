@@ -6,15 +6,11 @@
     "C#"
   ],
   "key": {
-    "#": {
-      "item": "minecraft:string"
-    },
-    "C": {
-      "item": "minecraft:chain"
-    }
+    "#": "minecraft:string",
+    "C": "minecraft:chain"
   },
   "result": {
-    "item": "matchbox:mesh",
+    "idee": "matchbox:mesh",
     "count": 4
   }
 }

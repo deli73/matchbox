@@ -7,15 +7,11 @@
     " c "
   ],
   "key": {
-    "c": {
-      "item": "minecraft:copper_ingot"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    }
+    "c": "minecraft:copper_ingot",
+    "R": "minecraft:redstone"
   },
   "result": {
-    "item": "matchbox:altimeter",
+    "id": "matchbox:altimeter",
     "count": 1
   }
 }
