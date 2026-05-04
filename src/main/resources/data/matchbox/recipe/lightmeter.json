@@ -7,10 +7,18 @@
     "i_i"
   ],
   "key": {
-    "i": "minecraft:copper_ingot",
-    "G": "minecraft:glass",
-    "Q": "minecraft:quartz",
-    "_": "minecraft:paper"
+    "i": {
+      "item": "minecraft:copper_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "_": {
+      "item": "minecraft:paper"
+    }
   },
   "result": {
     "id": "matchbox:lightmeter",

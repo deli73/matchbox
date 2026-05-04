@@ -7,8 +7,12 @@
     " c "
   ],
   "key": {
-    "c": "minecraft:copper_ingot",
-    "R": "minecraft:redstone"
+    "c": {
+      "item": "minecraft:copper_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
   },
   "result": {
     "id": "matchbox:altimeter",
